@@ -3,9 +3,28 @@
 @import "tailwindcss";
 @import "tailwind-animations"; /* https://github.com/midudev/tailwind-animations */
 
+/* FUENTES - OPCIÓN 2: instalar la fuente de forma directa (https://fontsource.org/fonts/jost/install) */
+@import "@fontsource-variable/jost"; /* Supports weights 100-900 */
+
+/* ************************************************** IMPORTS ************************************************** */
+
+/* FUENTES - OPCIÓN 1: instalar las fuentes y colocarlo de forma manual (recurso que puede ayudar: https://www.youtube.com/watch?v=363s_ziVwTg) (https://gwfh.mranftl.com/fonts) */
+/* Font display is a CSS property that controls how fonts appear on your website. (https://fontsource.org/docs/getting-started/display) */
+/* @font-face {
+    font-family: "Jost Variable";
+    src:
+      url("/fonts/jost-variable/webfonts/jost-cyrillic-800-normal.woff2")
+        format("woff2"),
+      url("/fonts/jost-variable/ttf/jost-cyrillic-800-normal.ttf")
+        format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  } */
+
 html {
-  font-family: system-ui, sans-serif;
-  background: #13151a;
+  font-family: "Jost Variable", system-ui, sans-serif;
+  background: #ddd;
   color: #fff;
 }
 
