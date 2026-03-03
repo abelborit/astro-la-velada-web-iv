@@ -1,0 +1,73 @@
+<section
+  class="text-primary text-center mx-auto flex flex-col justify-center items-center gap-10"
+>
+  <h2 class="uppercase text-5xl font-semibold">
+    4 de marzo <span aria-hidden class="hidden md:inline mx-1">·</span>
+    <br aria-hidden class="block md:hidden" />
+
+    <span>
+      <script is:inline>
+        // Fecha/hora final en milisegundos (1709575200000 corresponde a 4 de marzo de 2024, 19:00:00 GMT+1)
+        const END_DATE = 1709575200000;
+
+        // Crea un objeto Date con la fecha final
+        const endDateObject = new Date(END_DATE);
+
+        // Obtiene la hora y minutos en formato local español (ej: "20:00")
+        const date = endDateObject.toLocaleTimeString("es", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        // Obtiene el desfase horario local en horas (por ejemplo, -1 para GMT+1)
+        const tzOffset = endDateObject.getTimezoneOffset() / 60; // se divide por 60 para convertir de minutos a horas
+
+        // Invierte el signo para obtener el GMT correcto (por ejemplo, +1)
+        const diff = tzOffset * -1;
+
+        // Construye el string GMT+X o GMT-X según el desfase
+        const gmt = diff > 0 ? `GMT+${diff}` : `GMT-${Math.abs(diff)}`;
+
+        // Diccionario para traducir GMT+1 a CET (Central European Time)
+        const TZ_DICTIONARY = {
+          "GMT+1": "CET",
+        };
+
+        // Usa el nombre amigable si existe, si no, usa el GMT calculado
+        const tz = TZ_DICTIONARY[gmt] ?? gmt;
+        // console.log({
+        //   END_DATE,
+        //   endDateObject,
+        //   date,
+        //   tzOffset,
+        //   diff,
+        //   gmt,
+        //   TZ_DICTIONARY,
+        //   tz,
+        // });
+
+        // Inserta el resultado (hora + zona horaria) en el elemento padre del script
+        const selfScript = document.currentScript;
+        console.log("selfScript", selfScript);
+        selfScript.parentNode.innerHTML = `${date}H ${tz}`;
+      </script>
+    </span>
+  </h2>
+
+  <h3 class="uppercase text-2xl font-medium flex flex-col max-w-sm">
+    <span>Evento de Presentación</span>
+    <span>Teatro Victoria (Barcelona)</span>
+  </h3>
+
+  <a
+    class={`
+    border-primary border-2 font-medium uppercase text-lg px-4 py-1
+    hover:bg-slate-300 hover:scale-125 transition inline-block
+  `}
+    href="https://www.teatrevictoria.com/es/cartelera/c/190_la-velada-del-ano-4.html"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Entradas agotadas
+  </a>
+</section>
