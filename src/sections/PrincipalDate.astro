@@ -11,45 +11,41 @@
         const END_DATE = 1709575200000;
 
         // Crea un objeto Date con la fecha final
-        const endDateObject = new Date(END_DATE);
+        const date = new Date(END_DATE);
 
-        // Obtiene la hora y minutos en formato local español (ej: "20:00")
-        const date = endDateObject.toLocaleTimeString("es", {
+        /* Maneja automáticamente:
+          - Diferentes zonas horarias (ajusta a la zona del usuario: CET, CEST, GMT-5, etc)
+          - Formato de hora local (12h o 24h según configuración del usuario)
+        */
+        /* ¿Por qué usar Intl.DateTimeFormat?
+          - Creamos un formateador usando la API internacional del navegador
+          - Maneja automáticamente el horario de verano (DST)
+          - Devuelve nombres reales de zona (CET / CEST)
+          - Se adapta al formato de hora local del usuario (12h/24h)
+          - Evita cálculos manuales con getTimezoneOffset()
+       */
+        const formatter = new Intl.DateTimeFormat("es-ES", {
           hour: "2-digit",
           minute: "2-digit",
+          timeZoneName: "short",
         });
 
-        // Obtiene el desfase horario local en horas (por ejemplo, -1 para GMT+1)
-        const tzOffset = endDateObject.getTimezoneOffset() / 60; // se divide por 60 para convertir de minutos a horas
+        const formattedDate = formatter.format(date);
+        // console.log({ END_DATE, date, formatter, formattedDate });
 
-        // Invierte el signo para obtener el GMT correcto (por ejemplo, +1)
-        const diff = tzOffset * -1;
-
-        // Construye el string GMT+X o GMT-X según el desfase
-        const gmt = diff > 0 ? `GMT+${diff}` : `GMT-${Math.abs(diff)}`;
-
-        // Diccionario para traducir GMT+1 a CET (Central European Time)
-        const TZ_DICTIONARY = {
-          "GMT+1": "CET",
-        };
-
-        // Usa el nombre amigable si existe, si no, usa el GMT calculado
-        const tz = TZ_DICTIONARY[gmt] ?? gmt;
-        // console.log({
-        //   END_DATE,
-        //   endDateObject,
-        //   date,
-        //   tzOffset,
-        //   diff,
-        //   gmt,
-        //   TZ_DICTIONARY,
-        //   tz,
-        // });
-
-        // Inserta el resultado (hora + zona horaria) en el elemento padre del script
+        /* Usar "parentNode.innerHTML" es peligroso:
+          - Borra todo el contenido del padre
+          - Puede romper eventos y referencias a elementos
+          - No es seguro si el contenido formateado contiene HTML o caracteres especiales
+        */
+        /* Usar "replaceWith()" beneficios:
+          - Solo reemplaza el script
+          - Mantiene intacto el resto del DOM
+          - Es más preciso
+       */
         const selfScript = document.currentScript;
-        console.log("selfScript", selfScript);
-        selfScript.parentNode.innerHTML = `${date}H ${tz}`;
+        // console.log("selfScript", selfScript);
+        selfScript.replaceWith(`${formattedDate}H`);
       </script>
     </span>
   </h2>
