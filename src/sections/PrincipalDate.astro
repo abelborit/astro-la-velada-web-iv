@@ -1,53 +1,42 @@
+---
+/* Como estás usando Astro, lo más limpio sería evitar JS en cliente si no es necesario:
+  - Mejor performance
+  - Sin JS en cliente
+  - Más SEO-friendly
+*/
+// Fecha/hora final en milisegundos (1709575200000 corresponde a 4 de marzo de 2024, 19:00:00 GMT+1)
+const END_DATE = 1709575200000;
+
+// Crea un objeto Date con la fecha final
+const date = new Date(END_DATE);
+
+/* Maneja automáticamente:
+  - Diferentes zonas horarias (ajusta a la zona del usuario: CET, CEST, GMT-5, etc)
+  - Formato de hora local (12h o 24h según configuración del usuario)
+*/
+/* ¿Por qué usar Intl.DateTimeFormat?
+  - Creamos un formateador usando la API internacional del navegador
+  - Maneja automáticamente el horario de verano (DST)
+  - Devuelve nombres reales de zona (CET / CEST)
+  - Se adapta al formato de hora local del usuario (12h/24h)
+  - Evita cálculos manuales con getTimezoneOffset()
+*/
+const formatter = new Intl.DateTimeFormat("es-ES", {
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZoneName: "short",
+});
+
+const formattedDate = formatter.format(date);
+// console.log({ END_DATE, date, formatter, formattedDate });
+---
+
 <section
   class="text-primary text-center mx-auto flex flex-col justify-center items-center gap-10"
 >
   <h2 class="uppercase text-5xl font-semibold">
     4 de marzo <span aria-hidden class="hidden md:inline mx-1">·</span>
-    <br aria-hidden class="block md:hidden" />
-
-    <span>
-      <script is:inline>
-        // Fecha/hora final en milisegundos (1709575200000 corresponde a 4 de marzo de 2024, 19:00:00 GMT+1)
-        const END_DATE = 1709575200000;
-
-        // Crea un objeto Date con la fecha final
-        const date = new Date(END_DATE);
-
-        /* Maneja automáticamente:
-          - Diferentes zonas horarias (ajusta a la zona del usuario: CET, CEST, GMT-5, etc)
-          - Formato de hora local (12h o 24h según configuración del usuario)
-        */
-        /* ¿Por qué usar Intl.DateTimeFormat?
-          - Creamos un formateador usando la API internacional del navegador
-          - Maneja automáticamente el horario de verano (DST)
-          - Devuelve nombres reales de zona (CET / CEST)
-          - Se adapta al formato de hora local del usuario (12h/24h)
-          - Evita cálculos manuales con getTimezoneOffset()
-       */
-        const formatter = new Intl.DateTimeFormat("es-ES", {
-          hour: "2-digit",
-          minute: "2-digit",
-          timeZoneName: "short",
-        });
-
-        const formattedDate = formatter.format(date);
-        // console.log({ END_DATE, date, formatter, formattedDate });
-
-        /* Usar "parentNode.innerHTML" es peligroso:
-          - Borra todo el contenido del padre
-          - Puede romper eventos y referencias a elementos
-          - No es seguro si el contenido formateado contiene HTML o caracteres especiales
-        */
-        /* Usar "replaceWith()" beneficios:
-          - Solo reemplaza el script
-          - Mantiene intacto el resto del DOM
-          - Es más preciso
-       */
-        const selfScript = document.currentScript;
-        // console.log("selfScript", selfScript);
-        selfScript.replaceWith(`${formattedDate}H`);
-      </script>
-    </span>
+    <br aria-hidden class="block md:hidden" /><span>{formattedDate}H</span>
   </h2>
 
   <h3 class="uppercase text-2xl font-medium flex flex-col max-w-sm">
