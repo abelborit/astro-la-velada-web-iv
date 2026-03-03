@@ -33,3 +33,9 @@ body {
   width: 100%;
   height: 100%;
 }
+
+/* extender colores usando tailwind */
+@theme {
+  --color-primary: #333333;
+  --color-secondary: #dddddd;
+}

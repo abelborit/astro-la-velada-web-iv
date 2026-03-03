@@ -29,6 +29,7 @@ export default defineConfig({
         "@components": path.join(__dirname, "src/components"),
         "@layouts": path.join(__dirname, "src/layouts"),
         "@utils": path.join(__dirname, "src/utils"),
+        "@sections": path.join(__dirname, "src/sections"),
       },
     },
     plugins: [tailwindcss()],

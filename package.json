@@ -7,7 +7,7 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "sync-astro": "npx astro sync",
+    "sync:astro": "npx astro sync",
     "node-modules:remove": "rm -rf node_modules package-lock.json",
     ".astro:remove": "rm -rf .astro"
   },
