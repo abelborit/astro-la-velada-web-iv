@@ -2,21 +2,19 @@
 import HeroLogo from "@components/HeroLogo.astro";
 ---
 
-<section class="flex flex-col justify-center items-center">
+<section class="flex flex-col justify-center items-center text-center">
   <!-- NOTA: The class `text-[var(--color-secondary)]` can be written as `text-secondary`(suggestCanonicalClasses) -->
   <!-- <span
     class="uppercase text-[var(--color-secondary)] bg-[var(--color-primary)] px-2 py-1 font-medium"
   > -->
   <span
-    class="text-xl uppercase text-secondary bg-primary px-6 py-1 font-medium -mb-4 sm:-mb-9 lg:mb-9"
+    class="text-xl uppercase text-secondary bg-primary px-6 py-1 font-medium mb-9"
   >
     Presentación de la
   </span>
 
   <!-- IMPORTANTE: algo importante a tener en cuenta es que, como ahora se está creando el logo pero como componente y no usando con una etiqueta img, se puede mejorar de cierta forma el performance y la interacción con el usuario al entrar a la página, es decir, cuando es una imagen es un recurso y por lo tanto tiene que hacer una petición para traer dicho recurso y por ende haríamos que tarde un poco más en verse la imagen porque se tendría que descargar y luego se mostraría, entonces en este caso, como lo estamos añadiendo al HTML (por ser un recurso crítico por estar tan arriba y al prinicpio de la página), cuando se descargue el HTML, entonces se verá directamente este svg. Algo adicional es que también porque puede ser que a futuro se le necesiten pasar props para las clases y añadir clases adicionales como por ejemplo, cambiar el color y para esto entonces -- fill="currentColor" -- es para colocarle el color actual según se le pase en la clase -->
   <!-- 500px = 125 -->
-  <HeroLogo
-    class="w-80 h-80 sm:w-125 sm:h-125 lg:w-auto lg:h-auto text-primary"
-  />
+  <HeroLogo class="w-full h-auto max-h-150 text-primary" />
   <!-- <img src="../../public/hero-logo.svg" alt="Logo de la presentación" /> -->
 </section>

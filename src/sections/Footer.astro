@@ -19,11 +19,16 @@ const socialMediaLinks = [
   class="w-full border-primary border-t-2 flex flex-col md:flex-row justify-center items-center md:justify-between pt-5 pb-5 gap-y-10"
 >
   <span class="text-primary text-center">
-    © 2024 La Velada del Año <span aria-hidden class="hidden md:inline">|</span>
-    <br aria-hidden class="block md:hidden" /> Todos los derechos reservados.
+    © 2024 La Velada del Año <span aria-hidden="true" class="hidden md:inline">
+      |
+    </span>
+    <br aria-hidden="true" class="block md:hidden" /> Todos los derechos reservados.
   </span>
 
-  <hr aria-hidden class="w-full border-primary border-t-2 md:hidden -mt-5" />
+  <hr
+    aria-hidden="true"
+    class="w-full border-primary border-t-2 md:hidden -mt-5"
+  />
 
   <ul class="flex flex-row gap-x-6 items-center">
     {
@@ -35,7 +40,7 @@ const socialMediaLinks = [
             href={url}
             class="hover:scale-125 hover:opacity-70 transition inline-block"
           >
-            <img src={icon} alt={alt} />
+            <img src={icon} alt={alt} loading="lazy" />
           </a>
         </li>
       ))
