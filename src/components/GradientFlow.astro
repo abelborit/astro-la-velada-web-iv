@@ -1,0 +1,28 @@
+<div class="gradient-flow"></div>
+
+<style>
+  .gradient-flow {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+
+    background: linear-gradient(120deg, #111, #222, #444, #111);
+    background: linear-gradient(120deg, #fff, #ddd, #ccc, #eee);
+
+    background-size: 600% 600%;
+
+    animation: gradientMove 4s ease infinite;
+  }
+
+  @keyframes gradientMove {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+</style>
