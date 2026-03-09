@@ -1,0 +1,225 @@
+---
+import LaVeladaLogo from "@components/LaVelada.astro";
+
+// Timestamp del evento en milisegundos.
+// Un timestamp representa un punto exacto en el tiempo desde
+// el 1 de enero de 1970 (Unix Epoch).
+//
+// Esto evita problemas de zonas horarias porque el timestamp
+// siempre representa el mismo momento sin importar el país.
+//
+// const TIMESTAMP_END = 1709575200000; // Monday, 4 March 2024 at 6:00:00 pm
+const TIMESTAMP_END = 1804183200000; // Thursday, 4 March 2027 at 6:00:00 pm (ejemplo ficticio)
+---
+
+<section class="flex flex-col gap-y-10 justify-center items-center">
+  <LaVeladaLogo class="text-primary" />
+
+  <!--
+    role="timer":
+    Indica a tecnologías asistivas (screen readers) que este elemento
+    representa un temporizador que cambia con el tiempo.
+
+    aria-live="off":
+    Evita que los lectores de pantalla anuncien el cambio cada segundo,
+    lo cual sería muy molesto para usuarios con lectores.
+  -->
+  <div
+    class="flex flex-row gap-x-1 text-primary uppercase font-semibold"
+    role="timer"
+    aria-live="off"
+    data-countdown
+    data-date={TIMESTAMP_END}
+  >
+    <!-- DÍAS -->
+    <div class="flex flex-col justify-center items-center gap-y-2 w-16">
+      <!--
+        tabular-nums mantiene los números alineados
+        evitando que "1" y "8" cambien el ancho del layout.
+      -->
+      <span class="text-4xl tabular-nums" data-days>00</span>
+      <span class="text-xs text-center">Días</span>
+    </div>
+
+    <span aria-hidden="true" class="mt-1 text-xl">:</span>
+
+    <!-- HORAS -->
+    <div class="flex flex-col justify-center items-center gap-y-2 w-16">
+      <span class="text-4xl tabular-nums" data-hours>00</span>
+      <span class="text-xs text-center">Horas</span>
+    </div>
+
+    <span aria-hidden="true" class="mt-1 text-xl">:</span>
+
+    <!-- MINUTOS -->
+    <div class="flex flex-col justify-center items-center gap-y-2 w-16">
+      <span class="text-4xl tabular-nums" data-minutes>00</span>
+      <span class="text-xs text-center">Minutos</span>
+    </div>
+
+    <span aria-hidden="true" class="mt-1 text-xl">:</span>
+
+    <!-- SEGUNDOS -->
+    <div class="flex flex-col justify-center items-center gap-y-2 w-16">
+      <span class="text-4xl tabular-nums" data-seconds>00</span>
+      <span class="text-xs text-center">Segundos</span>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  /**
+   * Definimos unidades de tiempo en milisegundos.
+   *
+   * JavaScript trabaja con tiempo en milisegundos,
+   * por eso convertimos segundos/minutos/horas/días
+   * a su equivalente en ms.
+   */
+  const SECOND = 1000;
+  const MINUTE = SECOND * 60;
+  const HOUR = MINUTE * 60;
+  const DAY = HOUR * 24;
+
+  /**
+   * Formatea números a dos dígitos.
+   *
+   * Esto es importante porque queremos:
+   *
+   * 4  -> "04"
+   * 12 -> "12"
+   *
+   * padStart asegura que siempre haya 2 caracteres.
+   */
+  const format = (value) => String(value).padStart(2, "0");
+
+  /**
+   * Convierte una diferencia de tiempo (ms)
+   * en días, horas, minutos y segundos.
+   *
+   * Ejemplo:
+   * diff = 90061000 ms
+   *
+   * -> 1 día
+   * -> 1 hora
+   * -> 1 minuto
+   * -> 1 segundo
+   *
+   * Usamos módulo (%) para obtener los "restos"
+   * de cada unidad de tiempo.
+   */
+  const getTimeRemaining = (diff) => {
+    return {
+      // Total de días completos restantes
+      days: Math.floor(diff / DAY),
+
+      // Horas restantes dentro del día actual
+      hours: Math.floor((diff % DAY) / HOUR),
+
+      // Minutos restantes dentro de la hora actual
+      minutes: Math.floor((diff % HOUR) / MINUTE),
+
+      // Segundos restantes dentro del minuto actual
+      seconds: Math.floor((diff % MINUTE) / SECOND),
+    };
+  };
+
+  /**
+   * Inicializa el contador.
+   *
+   * Se encarga de:
+   * - encontrar los elementos del DOM
+   * - obtener el timestamp final
+   * - iniciar el intervalo que actualiza el contador
+   */
+  const initCountdown = () => {
+    // Buscamos el contenedor principal del contador
+    const container = document.querySelector("[data-countdown]");
+    if (!container) return;
+
+    /**
+     * dataset.date obtiene el valor de:
+     * data-date="1804183200000"
+     */
+    const endTimestamp = Number(container.dataset.date);
+    if (!endTimestamp) return;
+
+    /**
+     * Referencias a cada unidad de tiempo
+     * para evitar hacer querySelector cada segundo.
+     */
+    const elDays = container.querySelector("[data-days]");
+    const elHours = container.querySelector("[data-hours]");
+    const elMinutes = container.querySelector("[data-minutes]");
+    const elSeconds = container.querySelector("[data-seconds]");
+
+    if (!elDays || !elHours || !elMinutes || !elSeconds) return;
+
+    // Guardaremos el ID del intervalo para poder detenerlo
+    let intervalId;
+
+    /**
+     * Función que recalcula el tiempo restante
+     * y actualiza el DOM.
+     */
+    const update = () => {
+      // Tiempo actual en milisegundos
+      const now = Date.now();
+
+      // Diferencia entre el tiempo final y el actual
+      const diff = endTimestamp - now;
+
+      /**
+       * Si el contador llegó a 0 o pasó la fecha,
+       * detenemos el intervalo y mostramos 00:00:00:00
+       */
+      if (diff <= 0) {
+        elDays.textContent = "00";
+        elHours.textContent = "00";
+        elMinutes.textContent = "00";
+        elSeconds.textContent = "00";
+
+        clearInterval(intervalId);
+        return;
+      }
+
+      /**
+       * Convertimos la diferencia de tiempo
+       * en días, horas, minutos y segundos.
+       */
+      const { days, hours, minutes, seconds } = getTimeRemaining(diff);
+
+      /**
+       * Actualizamos el contenido del DOM.
+       */
+      elDays.textContent = format(days);
+      elHours.textContent = format(hours);
+      elMinutes.textContent = format(minutes);
+      elSeconds.textContent = format(seconds);
+    };
+
+    /**
+     * Ejecutamos la función inmediatamente
+     * para evitar esperar 1 segundo antes
+     * de ver el contador correcto.
+     */
+    update();
+
+    /**
+     * Actualizamos el contador cada segundo.
+     */
+    intervalId = setInterval(update, SECOND);
+  };
+
+  /**
+   * Nos aseguramos de ejecutar el script
+   * solo cuando el DOM esté listo.
+   *
+   * Esto evita errores si el script se ejecuta
+   * antes de que el HTML exista.
+   */
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initCountdown);
+  } else {
+    initCountdown();
+  }
+</script>
