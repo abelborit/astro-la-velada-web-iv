@@ -1,4 +1,5 @@
 ---
+import Noise from "@components/Noise.astro";
 import "../styles/global.css";
 ---
 
@@ -14,6 +15,7 @@ import "../styles/global.css";
   </head>
 
   <body>
+    <Noise />
     <div class="max-w-6xl px-10 py-20 mx-auto flex flex-col gap-10 md:gap-20">
       <!-- en "<slot />" se renderizan cada una de nuestras páginas -->
       <slot />

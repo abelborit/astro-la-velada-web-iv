@@ -1,0 +1,72 @@
+<div class="noise-overlay"></div>
+
+<style>
+  /**
+   * Overlay que crea el efecto de ruido tipo "film grain".
+   * Se posiciona sobre toda la pantalla sin bloquear interacción.
+   */
+  .noise-overlay {
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200vh;
+    pointer-events: none;
+    z-index: 9999;
+    background-image: url("./noise.png");
+    background-repeat: repeat;
+    filter: contrast(1.5) brightness(1.75);
+    animation: noise-shift 0.2s steps(2) infinite;
+    /* Optimización GPU */
+    will-change: transform;
+  }
+
+  /**
+   * Respeta preferencias de accesibilidad del sistema.
+   * Si el usuario reduce animaciones, desactivamos el efecto.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .noise-overlay {
+      animation: none;
+    }
+  }
+
+  /**
+   * Animación que mueve el patrón de ruido
+   * para simular grano analógico.
+   */
+  @keyframes noise-shift {
+    0% {
+      transform: translate(0, 0);
+    }
+    10% {
+      transform: translate(-5%, -5%);
+    }
+    20% {
+      transform: translate(-10%, 5%);
+    }
+    30% {
+      transform: translate(5%, -10%);
+    }
+    40% {
+      transform: translate(-5%, 15%);
+    }
+    50% {
+      transform: translate(-10%, 5%);
+    }
+    60% {
+      transform: translate(15%, 0);
+    }
+    70% {
+      transform: translate(0, 15%);
+    }
+    80% {
+      transform: translate(10%, 5%);
+    }
+    90% {
+      transform: translate(5%, 10%);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+</style>
