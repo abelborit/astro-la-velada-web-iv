@@ -1,0 +1,64 @@
+---
+const socialMediaLinks = [
+  {
+    name: "Twitch",
+    url: "https://www.twitch.tv/infolavelada",
+    icon: "./twitch.svg",
+    alt: "Logo de Twitch",
+  },
+];
+---
+
+<section
+  class="text-primary text-center font-medium flex flex-col justify-center items-center gap-5"
+>
+  <ul class="flex flex-row gap-x-6 items-center">
+    {
+      socialMediaLinks.map(({ url, icon, alt }) => (
+        <li>
+          <a
+            target="_blank"
+            rel="noopener"
+            href={url}
+            class="hover:scale-125 hover:opacity-70 transition inline-block"
+          >
+            <img src={icon} alt={alt} loading="lazy" class="w-20 h-20" />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="flex flex-col md:flex-row uppercase text-center gap-x-10 w-full">
+    <article
+      class="order-2 md:order-0 flex flex-1 justify-center items-center text-xl border-primary md:border-y-2 py-10 md:py-14 px-6"
+    >
+      <h5 class="sm:max-w-112.5 md:w-auto">
+        Presentación, Pesaje, Entrevista y Cara a Cara
+      </h5>
+    </article>
+
+    <article
+      class="order-1 md:order-0 flex flex-1 md:flex-[1.5] justify-center items-center text-3xl border-primary border-y-2 py-10 md:py-14 px-6"
+    >
+      <h4 class="sm:max-w-112.5 md:w-auto">
+        <a
+          target="_blank"
+          rel="noopener"
+          href="https://www.twitch.tv/ibai"
+          class="hover:text-purple-900 hover:scale-110 hover:opacity-70 transition inline-block"
+        >
+          Síguelo en directo en twitch.tv/ibai
+        </a>
+      </h4>
+    </article>
+
+    <article
+      class="order-3 md:order-0 flex flex-1 justify-center items-center text-xl border-primary border-y-2 py-10 md:py-14 px-6"
+    >
+      <h5 class="sm:max-w-112.5 md:w-auto">
+        Con la presencia de los boxeadores y boxeadoras
+      </h5>
+    </article>
+  </div>
+</section>
